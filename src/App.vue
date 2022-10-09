@@ -1,17 +1,20 @@
 <script>
+import { mpOpenId } from './utils/login';
+
 export default {
   onLaunch: function () {
-    console.log('App Launch')
+    console.log('import.meta.env.VITE_APP_ENV', import.meta.env.VITE_APP_ENV);
+    mpOpenId()
   },
   onShow: function () {
-    console.log('App Show')
+
   },
   onHide: function () {
-    console.log('App Hide')
+
   },
 }
 </script>
 
-<style>
-/*每个页面公共css */
+<style lang="scss">
+@import "vk-uview-ui/index.scss";
 </style>
