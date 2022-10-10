@@ -1,5 +1,4 @@
 import { post, get } from "@/utils/request";
-import useUserStore from "@/store/modules/user";
 
 /**
  * 账号密码登陆
@@ -21,6 +20,19 @@ export function getMpOpenId(code) {
     appid: appId,
     secret,
     grant_type: "authorization_code"
+  })
+}
+
+/**
+ * 微信小程序登录
+ * @param {*} iv
+ * @param {*} encryptedData
+ */
+export function mpLogin(iv, encryptedData) {
+  let { appId, sessionKey } = useUserStore()
+  return get('/wx/user/phone', {
+    appid: appId,
+    sessionKey, iv, encryptedData
   })
 }
 

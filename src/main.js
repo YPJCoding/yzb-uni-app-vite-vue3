@@ -1,6 +1,5 @@
 import { createSSRApp } from "vue";
 import App from "./App.vue";
-import 'uno.css'
 import store from '@/store'
 import uView from 'vk-uview-ui';
 

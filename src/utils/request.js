@@ -1,3 +1,4 @@
+
 export function request(baseUrl) {
   uni.$u.http.setConfig({
     baseUrl,
@@ -12,7 +13,8 @@ export function request(baseUrl) {
     }
   });
   uni.$u.http.interceptor.request = (config) => {
-    config.header.Authorization = ""
+    let { token } = useUserStore()
+    config.header.Authorization = token
     return config;
   }
   uni.$u.http.interceptor.response = (res) => {
