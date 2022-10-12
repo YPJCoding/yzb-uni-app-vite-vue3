@@ -1,5 +1,7 @@
-import { getMpOpenId } from "@/api";
+import { getMpOpenId, login } from "@/api";
+import { useRoute, useRouter } from "./router";
 
+let router = useRouter()
 /**
  * 微信小程序openId
  */
@@ -19,6 +21,27 @@ export function mpOpenId() {
       }
     },
   });
+}
+
+/**
+ * 登陆存储token
+ * @param {*} data.username
+ * @param {*} data.password
+ */
+export async function loginRequest(data) {
+  let [err, res] = await login({
+    username: data.username.replace('+86', "").replace(/[^0-9]/ig, ""),
+    password: data.password
+  })
+  if (err) return
+  setToken(res)
+  // 登录完成后，后退
+  let { route } = useRoute()
+  if (route.indexOf('quick') !== -1 || process.env.UNI_PLATFORM === "h5") {
+    router.back()
+  } else {
+    router.back(2)
+  }
 }
 
 /**

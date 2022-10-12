@@ -1,25 +1,32 @@
 <template>
   <div class="center flex-col p-5">
     <img src="../../static/logo.png" alt="" class="w-10 h-10 mx-auto block mb-20 mt-10">
+
     <u-button class="w-full" :disabled="!checked" type="success" :ripple="true" open-type="getPhoneNumber"
       @getphonenumber="getPhoneNumber">
       微信用户一键登录
     </u-button>
-    <u-button class="w-full mt-3" :disabled="!checked" :ripple="true">账号密码登录</u-button>
-    <div class="text-[24rpx] center mt-10">
-      <radio class="scale-[0.55]" :checked="checked" @click="checked=!checked"></radio>
-      <span class="text-stone-500">登录代表您已同意</span>
-      <span class="text-main">《用户协议》</span>、<span class="text-main">《隐私政策》</span>
-    </div>
+    <u-button class="w-full mt-3" :disabled="!checked" @click="toNormalLogin" :ripple="true">账号密码登录</u-button>
+
+    <!-- 协议复选框 -->
+    <RadioPolicy :checked="checked" @change="checked=$event" />
   </div>
 </template>
 
 <script setup>
-import { login, mpLogin } from '@/api'
-import { setToken } from "@/utils/login";
+import { useRouter } from "@/utils/router"
+import RadioPolicy from "../components/RadioPolicy/index.vue"
+import { mpLogin } from '@/api'
+import { loginRequest } from "@/utils/login";
 
+// 阅读同意协议
 let checked = $ref(import.meta.env.VITE_APP_ENV === 'development')
 
+const router = useRouter()
+
+/**
+ * 微信一键登录
+ */
 function getPhoneNumber({ detail }) {
   uni.checkSession({
     success: () => {
@@ -35,17 +42,25 @@ function getPhoneNumber({ detail }) {
             })
             return
           }
-          let [err2, res2] = await login({
+          await loginRequest({
             username: wxMaPhoneNumberInfo?.phoneNumber,
             password: loginCode
           })
-          if (err2) return
-          setToken(res2)
         }
       })
     }
   })
 }
+
+/**
+ * 账号密码登录
+ */
+function toNormalLogin() {
+  router.push({
+    name: 'NormalLogin'
+  })
+}
+
 </script>
 
 <style lang="scss" scoped>
