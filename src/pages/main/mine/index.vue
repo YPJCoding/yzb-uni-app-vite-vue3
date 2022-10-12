@@ -41,17 +41,16 @@
 
       </div>
     </div>
+    <!-- 金刚区 -->
+    <div>
+
+    </div>
   </div>
 </template>
 
 <script setup>
 
 let { userInfo, token } = useUserStore()
-console.log('%c [ userInfo ]-51', 'font-size:13px; background:pink; color:#bf2c9f;', userInfo)
-
-onLoad(async () => {
-  console.log('[ userInfo ] >', userInfo)
-})
 
 </script>
 
