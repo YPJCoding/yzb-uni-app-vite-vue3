@@ -20,7 +20,7 @@ export function request(baseUrl) {
   uni.$u.http.interceptor.response = (res) => {
     let code = res.status || res.resCode
     let data = res.data || res.resData
-    if (code == 200) {
+    if (code === 200) {
       console.log('🚀', data);
       return [null, data];
     } else {

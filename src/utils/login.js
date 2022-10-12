@@ -1,4 +1,4 @@
-import { getMpOpenId, login } from "@/api";
+import { getMpOpenId, login, vipStatus, getUserInfo } from "@/api";
 import { useRoute, useRouter } from "./router";
 
 let router = useRouter()
@@ -29,12 +29,22 @@ export function mpOpenId() {
  * @param {*} data.password
  */
 export async function loginRequest(data) {
-  let [err, res] = await login({
+  let { token, userInfo } = storeToRefs(useUserStore())
+  let [err1, res1] = await login({
     username: data.username.replace('+86', "").replace(/[^0-9]/ig, ""),
     password: data.password
   })
-  if (err) return
-  setToken(res)
+  if (err1) return
+  token.value = res1
+  // 获取用户信息
+  let [err2, res2] = await getUserInfo()
+  if (err2) return
+  // 获取用户会员状态
+  let [err3, res3] = await vipStatus()
+  if (err3) return
+  userInfo.value = {
+    ...res2, ...res3
+  }
   // 登录完成后，后退
   let { route } = useRoute()
   if (route.indexOf('quick') !== -1 || process.env.UNI_PLATFORM === "h5") {
@@ -42,13 +52,4 @@ export async function loginRequest(data) {
   } else {
     router.back(2)
   }
-}
-
-/**
- * 存储token
- * @param {*} val token
- */
-export function setToken(val) {
-  let { token } = storeToRefs(useUserStore())
-  token.value = val
 }

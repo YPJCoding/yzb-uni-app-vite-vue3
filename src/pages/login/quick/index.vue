@@ -1,9 +1,9 @@
 <template>
   <div class="center flex-col p-5">
-    <img src="../../static/logo.png" alt="" class="w-10 h-10 mx-auto block mb-20 mt-10">
+    <img src="../../../static/logo.png" alt="" class="w-10 h-10 mx-auto block mb-20 mt-10">
 
-    <u-button class="w-full" :disabled="!checked" type="success" :ripple="true" open-type="getPhoneNumber"
-      @getphonenumber="getPhoneNumber">
+    <u-button class="w-full" :disabled="!checked" :loading="loading" type="success" :ripple="true"
+      open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" @click="debounce">
       微信用户一键登录
     </u-button>
     <u-button class="w-full mt-3" :disabled="!checked" @click="toNormalLogin" :ripple="true">账号密码登录</u-button>
@@ -22,17 +22,24 @@ import { loginRequest } from "@/utils/login";
 // 阅读同意协议
 let checked = $ref(import.meta.env.VITE_APP_ENV === 'development')
 
+let loading = $ref(false)
 const router = useRouter()
+
+function debounce() {
+  loading = true
+  setTimeout(() => loading = false, 500)
+}
 
 /**
  * 微信一键登录
  */
-function getPhoneNumber({ detail }) {
+function getPhoneNumber({ detail: { iv, encryptedData } }) {
   uni.checkSession({
     success: () => {
       uni.getExtConfig({
         success: async () => {
-          let [err1, { loginCode, wxMaPhoneNumberInfo }] = await mpLogin(detail.iv, detail.encryptedData)
+          if (!iv || !encryptedData) return
+          let [err1, { loginCode, wxMaPhoneNumberInfo }] = await mpLogin(iv, encryptedData)
           if (err1) return;
           if (!wxMaPhoneNumberInfo) {
             uni.showModal({

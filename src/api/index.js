@@ -40,3 +40,14 @@ export function mpLogin(iv, encryptedData) {
 export function verify() {
   return post("/verify", {});
 }
+
+// 用户信息
+export function getUserInfo() {
+  return get("/polymerize/query/userInfo", {});
+}
+
+// vip状态
+export function vipStatus() {
+  return post("/members/status", {});
+}
+

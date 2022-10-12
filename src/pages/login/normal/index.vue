@@ -1,7 +1,6 @@
 <template>
   <div class="center flex-col p-5">
-    <img src="../../static/logo.png" alt="" class="w-10 h-10 mx-auto block mb-20 mt-10">
-
+    <img src="../../../static/logo.png" alt="" class="w-10 h-10 mx-auto block mb-20 mt-10">
     <u-form class="w-11/12 text-[30rpx]" :model="form" label-width="0">
       <u-form-item>
         <u-input v-model="form.username" type="digit" maxlength="20" :focus="true" placeholder="请输入手机号" />

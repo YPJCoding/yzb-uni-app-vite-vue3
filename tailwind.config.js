@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'main': '#e68235'
+        'main': '#f67b14'
       }
     }
   },
@@ -16,6 +16,9 @@ module.exports = {
           alignItems: 'center',
           justifyContent: 'center'
         },
+        '._active:active': {
+          filter: 'brightness(90%)'
+        }
       })
     })
   ],

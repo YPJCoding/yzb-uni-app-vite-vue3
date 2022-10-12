@@ -6,6 +6,13 @@
       "style": {
         "navigationBarTitleText": "uni-app"
       }
+    },
+    {
+      "name": "Mine",
+      "path": "pages/main/mine/index",
+      "style": {
+        "navigationBarTitleText": "我的",
+      }
     }
   ],
   "subPackages": [
